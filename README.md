@@ -1,5 +1,7 @@
 # Natural Language Inference Set
 
+---
+
 ## Introduction
 
 The **Natural Language Inference Set** project aims to create a dataset for Natural Language Inference (NLI) by generating text passages that challenge models' understanding of entailment, neutrality, and contradiction between pairs of longer texts. We leverage various Large Language Models (LLMs), including ChatGPT3.5, Llama 2.0, and Gemini, to generate longer texts consisting of two paragraphs using diverse prompts.
