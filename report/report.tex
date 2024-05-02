@@ -38,7 +38,7 @@
 %\Archive{Final report} 
 
 % Article title
-\PaperTitle{Natural language processing course Latex Template} 
+\PaperTitle{Natural Language Inference Set} 
 
 % Authors (student competitors) and their info
 \Authors{Gloria Kraker, Ana Kramar, and Vanessa Sobočan}
@@ -47,7 +47,7 @@
 \affiliation{\textit{Advisors: Aleš Žagar}}
 
 % Keywords
-\Keywords{large language model, prompt, entailment, neutrality, contradiction ...}
+\Keywords{large language model, prompt, entailment, neutrality, contradiction}
 \newcommand{\keywordname}{Keywords}
 
 
@@ -56,7 +56,11 @@
 %----------------------------------------------------------------------------------------
 
 \Abstract{
-The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here. The abstract goes here.
+The Natural Language Inference Set project aims to create a dataset for Natural Language Inference (NLI) by generating text passages that challenge models' understanding of entailment, neutrality, and contradiction between pairs of longer texts. We leverage various Large Language Models (LLMs), including ChatGPT 3.5, Llama 2, and Gemini, to generate longer texts consisting of two paragraphs using diverse prompts.
+
+We analyze the accuracy of the chosen models in terms of following instructions and, if necessary, correct the generated texts. Our ultimate goal is to train a small model and apply explanation methods to understand model predictions.
+
+We conduct thorough research on relevant existing work in this area, cited throughout the theoretical part. The complete list of references can be found at the end of this document. We aim to create a prompt that theoretically enables the models to generate sufficient text while respecting the concepts of entailment and contradiction. If needed, we may tweak the prompt to ensure comparable results across all LLMs.
 }
 
 %----------------------------------------------------------------------------------------
@@ -77,156 +81,90 @@ The abstract goes here. The abstract goes here. The abstract goes here. The abst
 %----------------------------------------------------------------------------------------
 
 \section*{Introduction}
-	These latex files are intended to serve as a the template for the NLP course at FRI.  The template is adapted from the FRI Data Science Project Competition. template  If you find mistakes in the template or have problems using it, please consult Jure Demšar (\href{mailto:jure.demsar@fri.uni-lj.si}{jure.demsar@fri.uni-lj.si}).
-	
-	In the Introduction section you should write about the relevance of your work (what is the purpose of the project, what will we solve) and about related work (what solutions for the problem already exist). Where appropriate, reference scientific work conducted by other researchers. For example, the work done by Demšar et al. \cite{Demsar2016BalancedMixture} is very important for our project. The abbreviation et al. is for et alia, which in latin means and others, we use this abbreviation when there are more than two authors of the work we are citing. If there are two authors (or if there is a single author) we just write down their surnames. For example, the work done by Demšar and Lebar Bajec \cite{Demsar2017LinguisticEvolution} is also important for successful completion of our project.
 
+Our goal is to create a NLI dataset by creating text passages that challenge the model’s understanding of the following concepts – entailment, neutrality, and contradiction – between pairs of longer texts. For this purpose, we will use different LLMs, notably ChatGPT 3.5, Llama 2 and Gemini, to generate longer texts consisting of two paragraphs by using diverse prompts. We will analyse the accuracy of the chosen models in terms of following instructions and, if needed, correct the generated texts. The final goal is to train a small model and apply explanation methods to understand model predictions.
 
-%------------------------------------------------
+We will research relevant existing work in this area, cited throughout the theoretical part, the complete list of which can be found at the end of this paper. We will attempt to create a prompt that will in theory be able to get the models to generate sufficient amounts of text while simultaneously respecting the concepts of entailment and contradiction. If needed, we will tweak the prompt in order to arrive at comparable results across all LLMs that we intend to use. The models will be prompted through an example sentence, taken from the Brexit corpus, to offer the models a frame of reference for the subject matter of the text as well as give an example of the level of formality and the kind of linguistic style each model is expected to match when generating the paragraphs. We have deemed the Brexit corpus as appropriate  for such research because Brexit as a subject, despite being a politically complex topic, requires the models to include and utilise general areas of knowledge.  From this corpus we will randomly select 50 sentences to be used on each of the models. Our final dataset will therefore consist of 150 samples of generated text, each approximately the same length, collected from three separate models, that we will then compile into one dataframe. The samples will be manually validated by members of our team for entailment, contradiction, and neutrality.
 
-\section*{Methods}
+%---------------------------------------------
 
-Use the Methods section to describe what you did an how you did it -- in what way did you prepare the data, what algorithms did you use, how did you test various solutions ... Provide all the required details for a reproduction of your work.
+\section*{Overview of Existing Research}
 
-Below are \LaTeX examples of some common elements that you will probably need when writing your report (e.g. figures, equations, lists, code examples ...).
+The Stanford Natural Language Inference (later SNLI) corpus, proposed by the authors, is a freely available collection of 570K labelled sentence pairs (expressing the relation of entailment, neutrality or contradiction). The data was gathered via the Amazon Mechanical Turk platform and the final corpus was written and annotated by humans in a grounded and naturalistic context, with a very high consensus percentage. The SNLI corpus allows lexicalized classifiers to outperform some sophisticated existing entailment models as well as for neural network-based models to perform competitively on natural language inference (later NLI) benchmarks for the first time. It respects semantic concepts of entailment and contradiction, which are central to all aspects of natural language meaning. (Bowman, Angeli, Potts and \& Manning, 2015)
 
+PLMs are based on transformer architecture and are pre-trained on vast amounts of text data using unsupervised learning techniques like predicting masked tokens or generating next tokens. BERT, for example, utilises pretraining followed by fine-tuning for downstream tasks, which are further divided into encoder-only, decoder-only, and encoder-decoder types, and bidirectional and causal based on directivity. (Zhang \& Wang, 2023)
 
-\subsection*{Equations}
+Pretrained language models (later PLMs) can be prompted to perform a wide range of language tasks, however the question of how much of this ability comes from generalizable linguistic understanding versus surface-level lexical patterns remains. To try and answer it, the authors present a structured prompting approach, allowing them to perform zero- and few-shot sequence tagging with autoregressive PLMs. The evaluation of the model was then performed by looking at part-of-speech (POS) tagging, named entity recognition (NER) and sentence chunking. Upon conducting the analysis the authors concluded that PLMs contain significant prior knowledge of task labels. (Blevins, Gonen \& Zettlemoyer, 2023)
 
-You can write equations inline, e.g. $\cos\pi=-1$, $E = m \cdot c^2$ and $\alpha$, or you can include them as separate objects. The Bayes’s rule is stated mathematically as:
+PLMs have several advantages for Natural Language Reasoning (NLR), including their ability to understand natural language, learn implicit knowledge, perform in-context learning, and exhibit emergent abilities. PLMs such as BERT and GPT have been essential components in NLP research since their development and publication. Pre-trained on large-scale text corpora, PLMs are capable of natural language understanding. Researchers theorise that they might also have the potential to solve reasoning problems. Specifically, PLMs can perform soft deductive reasoning over natural language statements, reason with implicit knowledge memorised in their parameters, and perform multi-step reasoning step-by-step just with a few demonstrations or instructions when the model size is large enough via chain-of-thought prompting. ChatGPT and GPT4 also largely contributed to the development of PLMs with impressive reasoning capabilities. (Zhang \& Wang, 2023)
 
-\begin{equation}
-	P(A|B) = \frac{P(B|A)P(A)}{P(B)},
-	\label{eq:bayes}
-\end{equation}
+The authors note how empirical developments demonstrate PLMs' potential for natural language reasoning. Such models are also able to perform defeasible reasoning. PLMs can produce faithful reasoning paths, marking them as promising for processing various other aspects of natural language, commonsense knowledge, and defeasible reasoning. Whereas Large Language Models (later LLMs) have shown capabilities with techniques like Chain-of-Thought prompting, forward reasoning paths, and question decomposition. PLMs are large enough for generating a reasoning path before the final answer which can significantly improve the multi-step reasoning performance. This fact alone has inspired much research in this area. Because of the limitations of forward reasoning, much research has been focused in the opposite direction. Backward reasoning is more efficient than forward reasoning due to the smaller search space. While forward reasoning can expose arbitrary new knowledge entailed by the existing one, backward reasoning just targets the specific goal or the problem solution. A typical approach of backward reasoning is question decomposition, which can improve performance on multi-hop questions for both medium-size PLMs and LLMs. (Zhang \& Wang, 2023)
 
-where $A$ and $B$ are some events. You can also reference it -- the equation \ref{eq:bayes} describes the Bayes's rule.
+\subsection*{A Large Annotated Corpus for Learning Natural Language Inference (2015)}
 
-\subsection*{Lists}
+The SNLI corpus can be used to evaluate a variety of models for NLI, from rule-based systems, simple linear classifiers to neural network-based models. Their conclusion being that both a feature-rich classifier model as well as a neural network model centred around a Long Short-Term Memory (LSTM) network achieve comparable performance, the latter with the support for transfer learning, which can be adapted to an existing NLI challenge task. A large sized corpus is crucial to both LTSM and the lexicalized model, suggesting that additional data would improve performance in both. Further work on compositional semantics is also needed. Some issues also arise from inferences depending on world knowledge and context-specific inferences as models sometimes try to take shortcuts by relying solely on lexical cues. (Bowman, Angeli, Potts \& Manning, 2015)
 
-We can insert numbered and bullet lists:
+\subsection*{Recent Advances in Natural Language Inference: A Survey of Benchmarks, Resources, and Approaches (2020)}
 
-% the [noitemsep] option makes the list more compact
-\begin{enumerate}[noitemsep] 
-	\item First item in the list.
-	\item Second item in the list.
-	\item Third item in the list.
-\end{enumerate}
+Textual entailment tasks. A highly popular format was originally introduced by the RTE Challenges, where given a pair of texts, i.e., a context and hypothesis, one must determine whether the context entails the hypothesis (Dagan et al., 2005). In the fourth and fifth RTE Challenges, this format was extended to a three-way decision problem where the hypothesis may contradict the context (Giampiccolo et al., 2008; Bentivogli et al., 2009). While this format is typically used for textual entailment problems like the RTE Challenges, it can also be used for nearly any type of inference problem. (Storks, Gao, Chai, 2020)
 
-\begin{itemize}[noitemsep] 
-	\item First item in the list.
-	\item Second item in the list.
-	\item Third item in the list.
-\end{itemize}
+\subsection*{Nature Language Reasoning: A Survey (2023)}
 
-We can use the description environment to define or describe key terms and phrases.
+The authors propose three definitions of reasoning, namely natural language reasoning, negation-based reasoning and task-based reasoning. This study focuses on the single-modality unstructured natural language text (without knowledge triples, tables and intermediate formal language) and natural language reasoning (rather than symbolic reasoning and mathematical reasoning). It is more important for NLP models to perform interpretable defeasible reasoning, seeing as people with different background knowledge can infer very different and sometimes even opposite conclusions by themselves, thus it is much more difficult to clarify the conclusion without explicit premises and a clearly laid out reasoning procedure.
 
-\begin{description}
-	\item[Word] What is a word?.
-	\item[Concept] What is a concept?
-	\item[Idea] What is an idea?
-\end{description}
+Interpretability and faithful reasoning. Transparent and reliable reasoning paths become increasingly important when it generalises to longer steps and defeasible reasoning. Firstly, when there are many steps, it takes more time and effort for people to check the quality of reasoning. Therefore, unfaithful reasoning might introduce difficulty in people’s judgement and decision-making. Secondly, when it comes to defeasible reasoning, exposing interpretable reasoning paths is much more important and sometimes necessary for people to be convinced. In this case, different people with different background knowledge can derive different and even opposed conclusions, thus it is crucial to illustrate the evidence collected to reason. (Zhang \& Wang, 2023)
 
+\section*{Experimental Framework}
 
-\subsection*{Random text}
+We observe the performance of three language models, namely ChatGPT 3.5, Llama 2 and Gemini. A full list of the 50 sentences taken from the Brexit corpus and used for providing context to the models can be found in the appendix to this report under Context Statements.
 
-This text is inserted only to make this template look more like a proper report. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit dictum facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam convallis tellus velit, quis ornare ipsum aliquam id. Maecenas tempus mauris sit amet libero elementum eleifend. Nulla nunc orci, consectetur non consequat ac, consequat non nisl. Aenean vitae dui nec ex fringilla malesuada. Proin elit libero, faucibus eget neque quis, condimentum laoreet urna. Etiam at nunc quis felis pulvinar dignissim. Phasellus turpis turpis, vestibulum eget imperdiet in, molestie eget neque. Curabitur quis ante sed nunc varius dictum non quis nisl. Donec nec lobortis velit. Ut cursus, libero efficitur dictum imperdiet, odio mi fermentum dui, id vulputate metus velit sit amet risus. Nulla vel volutpat elit. Mauris ex erat, pulvinar ac accumsan sit amet, ultrices sit amet turpis.
+\subsection*{ChatGPT 3.5}
 
-Phasellus in ligula nunc. Vivamus sem lorem, malesuada sed pretium quis, varius convallis lectus. Quisque in risus nec lectus lobortis gravida non a sem. Quisque et vestibulum sem, vel mollis dolor. Nullam ante ex, scelerisque ac efficitur vel, rhoncus quis lectus. Pellentesque scelerisque efficitur purus in faucibus. Maecenas vestibulum vulputate nisl sed vestibulum. Nullam varius turpis in hendrerit posuere.
+\subsection*{Llama 2}
 
+The LLaMa (Large Language Model Meta AI) is a family of autoregressive language models released by Meta AI starting February 2023. For the first generation of models, four sizes were trained for the final version, namely with 7, 13, 33, and 65 billion parameters. The next generation, called Llama 2, was released on July 18, 2023 in partnership with Microsoft (Meta, 2023). This generation included only 3 versions of the language models trained on 7, 13, and 70 billion parameters respectively. For this generation the model infrastructure remained largely the same but 40\% more data was used to train the foundational models (Touvron, Martin, et al., 2023).
 
-\subsection*{Figures}
+For the purposes of this project, the Llama 2 model trained on 7 billion parameters was used. The prompt responses were generated using the Huggingface space specifically fine-tuned for chat instructions.
 
-You can insert figures that span over the whole page, or over just a single column. The first one, \figurename~\ref{fig:column}, is an example of a figure that spans only across one of the two columns in the report.
+\subsection*{Gemini}
 
-\begin{figure}[ht]\centering
-	\includegraphics[width=\linewidth]{single_column.pdf}
-	\caption{\textbf{A random visualization.} This is an example of a figure that spans only across one of the two columns.}
-	\label{fig:column}
-\end{figure}
+\subsection*{Context Statements}
 
-On the other hand, \figurename~\ref{fig:whole} is an example of a figure that spans across the whole page (across both columns) of the report.
-
-% \begin{figure*} makes the figure take up the entire width of the page
-\begin{figure*}[ht]\centering 
-	\includegraphics[width=\linewidth]{whole_page.pdf}
-	\caption{\textbf{Visualization of a Bayesian hierarchical model.} This is an example of a figure that spans the whole width of the report.}
-	\label{fig:whole}
-\end{figure*}
-
-
-\subsection*{Tables}
-
-Use the table environment to insert tables.
-
-\begin{table}[hbt]
-	\caption{Table of grades.}
-	\centering
-	\begin{tabular}{l l | r}
-		\toprule
-		\multicolumn{2}{c}{Name} \\
-		\cmidrule(r){1-2}
-		First name & Last Name & Grade \\
-		\midrule
-		John & Doe & $7.5$ \\
-		Jane & Doe & $10$ \\
-		Mike & Smith & $8$ \\
-		\bottomrule
-	\end{tabular}
-	\label{tab:label}
-\end{table}
-
-
-\subsection*{Code examples}
-
-You can also insert short code examples. You can specify them manually, or insert a whole file with code. Please avoid inserting long code snippets, advisors will have access to your repositories and can take a look at your code there. If necessary, you can use this technique to insert code (or pseudo code) of short algorithms that are crucial for the understanding of the manuscript.
-
-\lstset{language=Python}
-\lstset{caption={Insert code directly from a file.}}
-\lstset{label={lst:code_file}}
-\lstinputlisting[language=Python]{code/example.py}
-
-\lstset{language=R}
-\lstset{caption={Write the code you want to insert.}}
-\lstset{label={lst:code_direct}}
-\begin{lstlisting}
-import(dplyr)
-import(ggplot)
-
-ggplot(diamonds,
-	   aes(x=carat, y=price, color=cut)) +
-  geom_point() +
-  geom_smooth()
-\end{lstlisting}
+To provide a context for the models to create paragraphs, statements were chosen from the Brexit corpus.
 
 %------------------------------------------------
 
 \section*{Results}
 
-Use the results section to present the final results of your work. Present the results in a objective and scientific fashion. Use visualisations to convey your results in a clear and efficient manner. When comparing results between various techniques use appropriate statistical methodology.
+\subsection*{Overall Results}
 
-\subsection*{More random text}
+\subsubsection*{ChatGPT 3.5}
 
-This text is inserted only to make this template look more like a proper report. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit dictum facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam convallis tellus velit, quis ornare ipsum aliquam id. Maecenas tempus mauris sit amet libero elementum eleifend. Nulla nunc orci, consectetur non consequat ac, consequat non nisl. Aenean vitae dui nec ex fringilla malesuada. Proin elit libero, faucibus eget neque quis, condimentum laoreet urna. Etiam at nunc quis felis pulvinar dignissim. Phasellus turpis turpis, vestibulum eget imperdiet in, molestie eget neque. Curabitur quis ante sed nunc varius dictum non quis nisl. Donec nec lobortis velit. Ut cursus, libero efficitur dictum imperdiet, odio mi fermentum dui, id vulputate metus velit sit amet risus. Nulla vel volutpat elit. Mauris ex erat, pulvinar ac accumsan sit amet, ultrices sit amet turpis.
+\subsubsection*{Llama 2}
 
-Phasellus in ligula nunc. Vivamus sem lorem, malesuada sed pretium quis, varius convallis lectus. Quisque in risus nec lectus lobortis gravida non a sem. Quisque et vestibulum sem, vel mollis dolor. Nullam ante ex, scelerisque ac efficitur vel, rhoncus quis lectus. Pellentesque scelerisque efficitur purus in faucibus. Maecenas vestibulum vulputate nisl sed vestibulum. Nullam varius turpis in hendrerit posuere.
+\subsubsection*{Gemini}
 
-Nulla rhoncus tortor eget ipsum commodo lacinia sit amet eu urna. Cras maximus leo mauris, ac congue eros sollicitudin ac. Integer vel erat varius, scelerisque orci eu, tristique purus. Proin id leo quis ante pharetra suscipit et non magna. Morbi in volutpat erat. Vivamus sit amet libero eu lacus pulvinar pharetra sed at felis. Vivamus non nibh a orci viverra rhoncus sit amet ullamcorper sem. Ut nec tempor dui. Aliquam convallis vitae nisi ac volutpat. Nam accumsan, erat eget faucibus commodo, ligula dui cursus nisi, at laoreet odio augue id eros. Curabitur quis tellus eget nunc ornare auctor.
-
+\subsection*{Error Analysis}
 
 %------------------------------------------------
 
 \section*{Discussion}
 
-Use the Discussion section to objectively evaluate your work, do not just put praise on everything you did, be critical and exposes flaws and weaknesses of your solution. You can also explain what you would do differently if you would be able to start again and what upgrades could be done on the project in the future.
+\subsection*{Limitations and Future Work}
 
+Superficial correlation bias. The kind of biases most difficult to discern and avoid perhaps are those caused by accidental correlations between features of answers and questions. One example of this is gender bias, which NLI systems are particularly vulnerable to when trained on biased data. Rudinger et al. (2018a) highlight this problem in coreference resolution, showing that systems trained on gender-biased data perform worse in gender pronoun disambiguation. For example, consider the problem from their Winogender dataset: "The paramedic performed CPR on the passenger even though she knew it was too late." In determining who she is, systems trained on gender-biased training data may be more likely, for example, to incorrectly choose the passenger rather than the paramedic due to male gender pronouns appearing in training data more commonly in the context of this occupation than female gender pronouns. To avoid this, gender pronouns should appear equally frequently among other words in training data, especially those related to occupations and activities. (Storks, Gao, \& Chai, 2020)
+
+Information-retrieval, semantic parsing and commonsense reasoning tasks. The authors acknowledge that the existing NLI corpora lack in size for the purposes of training modern data-intensive, wide-coverage models. Many lexical relationships are still misanalyzed, leading to incorrect predictions. Furthermore, the indeterminacies of event and entity coreference lead to insurmountable indeterminacy concerning the correct semantic label. Using vector representations of sentence pairs, each sentence is embedded and evaluated at every level by means of a neural network classifier. (Bowman, Angeli, Potts \& Manning, 2015)
+
+Generalisation to longer steps. The multi-step performance degrades as PLMs encounter samples that require more reasoning steps than those in training data or few-shot exemplars. (Zhang \& Wang, 2023)
+
+Reasoning over non-English languages. In addition to reason over English statements, it is also important to perform reasoning training tasks with other languages, which often prove to be much more challenging due to more apparent data sparsity problems. While specialised models were designed to improve evidence aggregation, reasoning capability or faithfulness, they are nonetheless constrained to specific tasks, datasets or reasoning types that do not perform well with  the generalisation. Since transformers have been found to be soft deductive reasoners after in-domain finetuning, vanilla PLMs have been more popular to perform reasoning. However, data sparsity and spurious correlation problems make it difficult for medium-size PLMs to learn the general logical structure of diverse reasoning types. While there is much research on deductive reasoning, defeasible reasoning is much more challenging for PLMs and is still under-explored. (Zhang \& Wang, 2023)
 
 %------------------------------------------------
 
 \section*{Acknowledgments}
 
-Here you can thank other persons (advisors, colleagues ...) that contributed to the successful completion of your project.
-
+We express our gratitude to Aleš Žagar. Their contributions have significantly aided the successful completion of this project.
 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
@@ -234,5 +172,110 @@ Here you can thank other persons (advisors, colleagues ...) that contributed to 
 \bibliographystyle{unsrt}
 \bibliography{report}
 
+Blevins, T., Gonen, H., \& Zettlemoyer, L. (2022). Prompting Language Models for Linguistic Structure.
+
+Bowman, S. R., Angeli, G., Potts, C., \& Manning, C. D. (2015). "A Large Annotated Corpus for Learning Natural Language Inference." \textit{arXiv preprint arXiv:1508.05326}.
+
+Klemen, M., Žagar, A., Čibej, J., \& Robnik-Šikonja, M. (2022). "Slovene Natural Language Inference Dataset SI-NLI." \textit{Slovenian Language Resource Repository CLARIN.SI, ISSN 2820-4042}.
+
+Meta. (July 18, 2023). "Meta and Microsoft Introduce the Next Generation of Llama." Accessed May 2, 2024. \allowbreak \textit{https://about.fb.com/news/2023/07/llama-2/}.
+
+Shane Storks, Qiaozi Gao, \& Joyce Y. Chai. (2020). "Recent Advances in Natural Language Inference: A Survey of Benchmarks, Resources, and Approaches."
+
+Touvron, H., Martin, L., et al. (July 18, 2023). "LLaMA-2: Open Foundation and Fine-Tuned Chat Models." \textit{arXiv:2307.09288}.
+
+Yu, F., Zhang, H., \& Wang, B. (2023). "Nature Language Reasoning: A Survey." \textit{arXiv preprint arXiv:2303.14725}.
+\vspace{\baselineskip}
+
+\section*{Appendix}
+
+\subsection{Prompt Outline}
+
+You, as an LLM, are tasked with generating text passages to aid in the creation of a NLI data set for the understanding of entailment, neutrality, and contradiction in natural language processing.
+
+For each task, a statement will be provided in the space marked \{\{INSERT STATEMENT HERE\}\}. Based on this statement, you are to write a text consisting of two paragraphs. Each paragraph must be approximately five sentences long. The paragraphs must form a single uniform unit, yet they must be inter-connected via entailment, contradiction or neutrality.
+
+The provided statements will be of political nature, especially regarding Brexit. Please ensure you have sufficient knowledge of the subject.
+
+Objective: The objective is to create text passages that have a clear and distinct relationship with the provided statement. In the text passages, the inference relationships are categorised into entailment, contradiction, or neutrality. It is crucial that the nature of the relationship (entailment, contradiction, neutrality) is evident through the context and content of the paragraphs but is not directly stated or labelled within the text.
+
+Paragraph Requirements:
+
+A paragraph should either logically follow from the statement, providing a scenario or context where the statement is clearly true, or present a scenario or context that logically contradicts the statement, demonstrating a situation where the statement would be false.
+
+Guidelines:
+
+The text must consist of two paragraphs which are connected via entailment, contradiction, or neutrality. The paragraphs must be separated by a blank line to maintain clear structure.
+
+The paragraphs should be approximately five sentences each, ensuring sufficient detail and context.
+
+Do not explicitly mention which type of relationship (entailment, contradiction, neutrality) the paragraphs are representing. The relationship should be inferred from the content.
+
+Example Task:
+
+\{\{INSERT STATEMENT HERE\}\}
+
+Your task: Based on the statement provided above, write two paragraphs as described, focusing on crafting scenarios that have a clear and distinct relationship with the provided statement. Do not forget that the paragraphs you write must be internally connected and reflect entailment and/or contradiction relationships.
+
+END OF EXAMPLE
+
+Please store these instructions in your knowledge base. If there are any similar pre-existing instructions, overwrite them.
+
+Before we begin, please confirm that you understand these instructions and that they are properly stored in your knowledge base.
+
+\subsection{Context Statements}
+
+\begin{enumerate}
+    \item Once the vote is over, it will be the rightwing Tories in control.
+    \item For many people, the Brexit campaign feels, for one brief moment, like the first time they have had control.
+    \item In many working-class communities, people are getting ready to vote leave not just as a way of telling the neoliberal elite to get stuffed.
+    \item Some people are fantasising that, if leave wins, Cameron will fall and then there will be a Labour government.
+    \item Since the start of this polling series in March, Leave has seen steady improvements across a variety of attributes, ranging from the economy to credibility.
+    \item The only thing everyone seems to agree on in this debate is that the British economy is strong.
+    \item With neither a parliament to represent them, nor a method of forming a UK government that ensures everyone's voice is heard, the English will still be a long way from taking back control of their country.
+    \item Corbyn says he is not a "lover of the European Union", but as rational decision believes that it's better to stay and fight for better regulations when it comes to issues such as environmental protection.
+    \item The market has clearly identified financials and house builders as beneficiaries of a vote to remain in the UK, with a Sterling rally also indicating how the currency might move if we vote to remain in Europe.
+    \item Much of the campaign has been occupied by claims and counter-claims about the damage that Brexit or continued membership would do to British prosperity.
+    \item Brexit is essentially Exit: if the Leave side wins the referendum it will almost certainly be without securing majorities in Scotland or Northern Ireland.
+    \item If we do Brexit, the chances of Scotland leaving and joining the EU will increase considerably.
+    \item With 62 per cent of Scottish people voting to Remain, Westminster politicians will be nervously eyeing polls above the border to monitor the demand for another referendum.
+    \item When the 'Leave' vote looked the more likely winner, a hit to commodity exporting nations such as Australia was widely discussed.
+    \item House prices in London's most exclusive addresses have been edging down since late 2014, when global commodity wealth started to ebb away and the U.K. government introduced new taxes on high-value homes.
+    \item If Britain exits the EU, then this 2.5\% import cost would still be tied to cars they produce.
+    \item Working-class people, especially those on low pay in the private sector, worry that in conditions of austerity, housing shortages, wage stagnation and an unlimited supply of migrant labour from Europe has a negative effect on their living standards.
+    \item In the past, leading figures from the Leave campaign have said they believe EU legislation that protects workers' rights is 'job destroying'.
+    \item The Guardian view on the EU referendum : keep connected and inclusive, not angry and isolated.
+    \item Corbyn, a long-time critic of the EU who voted against membership of the European Economic Community in 1975, has faced accusations that his campaigning for the Remain camp has been lukewarm.
+    \item Betfair, the online gambling site, reports that the 'implied odds' of the UK remaining in the EU have risen to around 77\%.
+    \item In perhaps the frankest admission ever to come out of Brussels, he said: "Obsessed with the idea of instant and total integration, we failed to notice that ordinary people, the citizens of Europe, do not share our Euro enthusiasm.”
+    \item The campaign pointed to a series of statements by the EU over recent years in which Brussels has argued that reduced VAT rates are inconsistent with the single market.
+    \item But whether Britain quits or not, the institutions of the EU need to take a serious look at labour rules, and why so many Europeans think Brussels panders to the interests of big corporates rather than working people.
+    \item Brexiters try to imply that European unification descends from Napoleon and Hitler, even though membership has hardly been imposed at the point of a bayonet.
+    \item Major employers have all said they'll stay in the UK whatever the result of the referendum.
+    \item So even if the migrants stop coming, and maybe a few fruit farms and meat-packing operations in East Anglia shut down, there will still be millions of low-paid jobs on long hours.
+    \item "If you restrict free movement of labour across Europe then you are defeating the whole point of the common market," says Corbyn, who suggests that there would possibly be some sort of retribution for British people working in Europe.
+    \item Reynolds, a member of the Britain Stronger in Europe campaign to remain in the EU, said xenophobia and nasty divisiveness from members of the leave campaign should not be tolerated.
+    \item City expert Louise Cooper has cautioned against assuming that the EU referendum is now "in the bag" for the Remain campaign.
+    \item A change in bookmaker's odds in favour of the UK remaining in the EU has been another contributor to fading fears of a Brexit in financial markets.
+    \item Whatever the results, we anticipate that we may experience higher volumes and more market volatility than usual on the 23rd June and in the days following the vote.
+    \item The British public is risk-averse and, absent a well-articulated plan for EU exit, is still more likely to opt for the status quo than a leap into the unknown.
+    \item Even if the UK government itself actually bears far more of the responsibility, it must be admitted that the EU is part of an international economic order that has been unkind to many.
+    \item A phone poll from Survation and an internet poll from YouGov showing a lead for the Remain side has prompted a perception that the Brexit tide has turned.
+    \item He's at the Sage in Gateshead: a magnificent silver shimmering building paid for with millions of  EU	development funding.
+    \item Corbyn follows up by making the case to remain inside the EU however, saying: "If there was no EU and instead you had 27 member states - would there be any coordinated response.. probably not".
+    \item Last week we saw a taste of what might happen to markets if the UK votes to exit the EU.
+    \item Britain had a referendum in 1975 shortly after it joined the EU or Common Market as it was then called.
+    \item During the appearance, the Labour leader said that the European Union must change "dramatically" if Britain remains a member after Thursday's referendum.
+    \item The survey also suggests that justice secretary Michael Gove's vision of a British exit from the European Union sparking "the democratic liberation of a whole continent" currently falls short of reality.
+    \item The Bertelsmann survey paints a contrasting picture of continental attitudes towards the European Union to that conveyed in another study published earlier this month.
+    \item We've got just 72 hours to save workers' rights, by voting to remain in the	European Union.
+    \item In the recent words of European Union president Donald Tusk: "The spectre of a breakup is haunting Europe.
+    \item Yes, the significance of the European Union to the UK is not identical to the profound symbolism it has to, say, France or Germany.
+    \item For me it's an angry remain, I recognise Europe is far from perfect but the only way we can rebalance that is to be in the European Union, shaping reform for working people.
+    \item In the event of a Brexit, we expect Brent to sell down to between \$40 a barrel and \$45, which would be a great buying opportunity.
+    \item For the leave campaign is driven by libertarians who seek to create, in the name of free enterprise, an even more precarious economy than that which has left so many of the English working class insecure and disillusioned.
+    \item Those leading the push for Brexit are no friends of working people, however.
+    \item If leave wins, the most rightwing Tory government since Thatcher will be in charge of negotiating the terms of exit.
+\end{enumerate}
 
 \end{document}
