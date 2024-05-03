@@ -116,7 +116,7 @@ Interpretability and faithful reasoning. Transparent and reliable reasoning path
 
 \section*{Experimental Framework}
 
-We observe the performance of three language models, namely ChatGPT 3.5, Llama 2 and Gemini. A full list of the 50 sentences taken from the Brexit corpus and used for providing context to the models can be found in the appendix to this report under Context Statements.
+We observe the performance of three language models, namely ChatGPT 3.5, Llama 2 and Gemini. To evaluate the each model, 50 statements taken from the Brexit corpus (including retweets) will be given to each model to provide a context and basis for the generated paragraphs. Each response was then manually evaluated by the researchers based on predetermined evaluation criteria and scored on a scale of 1-10.
 
 \subsection*{ChatGPT 3.5}
 
@@ -132,13 +132,28 @@ Gemini, previously known as Bard (launched on March 21, 2023), is a generative A
 
 In February, Google launched “Gemini 1.” in a limited capacity, positioned as a more powerful and capable model than 1.0 Ultra. [...] including a new architecture, a mixture-of-experts approach, and a larger one-million-token context window, which equates to roughly an hour of silent video, 11 hours of audio, 30,000 lines of code, or 700,000 words. (Stokes, 2024)
 
-Gemini 1 has three models, with the same software architecture; decoder-only transformers, with modifications that allow for training and inference on TPUs. Due to its multimodality, each context window can contain multiple forms of input, which can appear in a flexible order, including different resolutions of input images. Gemini 1.5 has so far published one model, Gemini 1.5 Pro, which is a multimodal sparse mixture-of-experts, with context length of “multiple millions”.  (Google DeepMind, 2024)
+Gemini 1 has three models, with the same software architecture; decoder-only transformers, with modifications that allow for training and inference on TPUs. Due to its multimodality, each context window can contain multiple forms of input, which can appear in a flexible order, including different resolutions of input images. Gemini 1.5 has so far published one model, Gemini 1.5 Pro, which is a multimodal sparse mixture-of-experts, with context length of “multiple millions”. (Google DeepMind, 2024)
 
 For the purposes of this project, Gemini 1 was used.
 
 \subsection*{Context Statements}
 
-To provide a context for the models to create paragraphs, statements were chosen from the Brexit corpus.
+To provide a context for the models to create paragraphs, 50 statements were chosen from the Brexit corpus, a collection of texts about the UK referendum on the withdrawal of the United Kingdom from the European Union (Sketch Engine 2018). The corpus contains 100 million words consisting mostly of retweets relating to the referendum with the remaining texts being thematic news, comments and blogs (Sketch Engine, 2018). All texts were written in June before the referendum which took place on June 23, 2016 (Sketch Engine 2018). A full list of the 50 sentences taken from the corpus and used for providing context to the models can be found in the appendix to this report under Context Statements.
+
+\subsection*{Evaluation Criteria}
+
+All 150 responses were manually evaluated and given a score of 1-10 based on the following 8 predetermined evaluation criteria.
+
+\begin{enumerate}
+    \item Content Coverage
+    \item Accuracy
+    \item Conciseness
+    \item Coherence and Structure
+    \item Readability
+    \item Non-Redundancy
+    \item Referential Clarity
+    \item Focus
+\end{enumerate}
 
 %------------------------------------------------
 
@@ -184,15 +199,17 @@ Blevins, T., Gonen, H., \& Zettlemoyer, L. (2022). Prompting Language Models for
 
 Bowman, S. R., Angeli, G., Potts, C., \& Manning, C. D. (2015). "A Large Annotated Corpus for Learning Natural Language Inference." \textit{arXiv preprint arXiv:1508.05326}.
 
-Google DeepMind. Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context. (February 15, 2024). 
+Google DeepMind. Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context. (February 15, 2024).
 
 Klemen, M., Žagar, A., Čibej, J., \& Robnik-Šikonja, M. (2022). "Slovene Natural Language Inference Dataset SI-NLI." \textit{Slovenian Language Resource Repository CLARIN.SI, ISSN 2820-4042}.
 
 Meta. (July 18, 2023). "Meta and Microsoft Introduce the Next Generation of Llama." Accessed May 2, 2024. \allowbreak \textit{https://about.fb.com/news/2023/07/llama-2/}.
 
-Stokes, Samantha. "Here's everything you need to know about Gemini 1.5, Google's newly updated AI model that hopes to challenge OpenAI". Business Insider.  (February 15, 2024). 
-
 Shane Storks, Qiaozi Gao, \& Joyce Y. Chai. (2020). "Recent Advances in Natural Language Inference: A Survey of Benchmarks, Resources, and Approaches."
+
+Sketch Engine. (May 29, 2018). “Brexit Corpus.” Accessed May 2, 2024. https://www.sketchengine.eu/news/brexit-corpus-referendum/.
+
+Stokes, Samantha. "Here's everything you need to know about Gemini 1.5, Google's newly updated AI model that hopes to challenge OpenAI". Business Insider.  (February 15, 2024).
 
 Touvron, H., Martin, L., et al. (July 18, 2023). "LLaMA-2: Open Foundation and Fine-Tuned Chat Models." \textit{arXiv:2307.09288}.
 
