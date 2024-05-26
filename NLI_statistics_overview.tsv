@@ -1,0 +1,4 @@
+LLM_model	content (%)	conciseness (%)	cohesion (%)
+ChatGPT-3.5	100	86	98
+Gemini	80	96	76
+Llama 2	88	80	100
